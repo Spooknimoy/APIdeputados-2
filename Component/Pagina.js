@@ -16,10 +16,10 @@ const Pagina = () => {
 
     const estilotitulo = {
         color: 'rgba(255, 255, 255, 0.8)',
-        fontSize: '3rem', // alterado de 2rem para 3rem
+        fontSize: '3rem', 
         fontWeight: 'bold',
         paddingRight: '15vh',
-        marginTop: '2rem' // adicionado margem para cima
+        marginTop: '2rem' 
     }
 
     const estilotexto = {
@@ -44,7 +44,7 @@ const Pagina = () => {
             <Cabecalho />
             <div style={estiloBackground}>
                 <Container className="d-flex flex-row-reverse align-items-center">
-                    <img style={mulher22} src={logs} alt="Descrição da imagem"  title='Imagem da api'/>
+                    <img style={mulher22} src='https://i.im.ge/2023/05/18/UnrnXz.m.png' alt="Descrição da imagem"  title='Imagem da api'/>
                     <div className="" style={texto}>
                         <h1 style={estilotitulo}>Dados abertos</h1>
                         <p style={estilotexto}>Se você precisa de dados selecionados, um pouco de cada vez, conheça e experimente aqui mesmo a nova API RESTful, suas URLs para acesso aos dados, seus parâmetros de busca e as estruturas de dados retornadas.</p>
