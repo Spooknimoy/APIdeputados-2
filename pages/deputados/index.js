@@ -1,29 +1,52 @@
 import Pagina from '@/Component/Pagina'
+import apiDeputados from '@/services/apiDeputados'
+import { Autocomplete, Button, TextField } from '@mui/material'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Nav, Navbar } from 'react-bootstrap'
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import SendIcon from '@mui/icons-material/Send';
+
+
 
 const index = () => {
   const subli = {
     textDecoration: 'none',
   }
 
+
+  const barra = {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: '20rem'
+  }
+
+  const [deputados, setDeputados] = useState([])
+
+  useEffect(() => {
+
+    apiDeputados.get('/deputados').then(resultado => {
+      setDeputados(resultado.data.dados)
+    })
+  }, [])
+
+
   return (
     <>
       <Pagina />
-        <Container>
+      <Container>
 
-        <Nav variant="tabs" defaultActiveKey="/home"  className='mt-4'>
-      <Nav.Item>
-        <Nav.Link href="/home">API RESTful</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link eventKey="link-1">Arquivos</Nav.Link>
-      </Nav.Item>
-     
-    </Nav>
-        </Container>
-      
+        <Nav variant="tabs" defaultActiveKey="/home" className='mt-4'>
+          <Nav.Item>
+            <Nav.Link href="/home">API RESTful</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link-1">Arquivos</Nav.Link>
+          </Nav.Item>
+
+        </Nav>
+      </Container>
+
       <Container>
         <p className='mt-3'>
           <strong>Versão: 0.4.80 - 05/10/2023 04:52 PM </strong>- confira o que mudou na{' '}
@@ -57,13 +80,30 @@ const index = () => {
           . Caso você encontre problemas ou queira dar sugestões, por favor entre em{' '}
           <Link style={subli} href='https://dadosabertos.camara.leg.br/contact/contact.html'>contato.</Link>
         </p>
+
+        <Autocomplete
+  style={barra}
+  id="Deputados"
+  freeSolo
+  options={deputados.map((option) => option.nome)}
+  renderInput={(params) => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <TextField {...params} label="Deputados" sx={{ marginRight: '10px' }} />
+      <Button disabled={false} variant="elevated" endIcon={<SendIcon />} sx={{ marginLeft: '-10px' }}  size='large'>
+        Enviar
+      </Button>
+    </div>
+  )}
+  sx={{ width: 500 }}
+/>
       </Container>
 
 
-      
 
 
-  
+
+
+
     </>
   )
 }
