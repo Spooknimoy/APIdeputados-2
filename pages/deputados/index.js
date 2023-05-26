@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 
 
 
+
 const index = () => {
   const subli = {
     textDecoration: 'none',
@@ -31,8 +32,7 @@ const index = () => {
   }, [])
 
 
-  return (
-    <>
+  return (<>
       <Pagina />
       <Container>
 
@@ -80,32 +80,12 @@ const index = () => {
           . Caso você encontre problemas ou queira dar sugestões, por favor entre em{' '}
           <Link style={subli} href='https://dadosabertos.camara.leg.br/contact/contact.html'>contato.</Link>
         </p>
-
-        <Autocomplete
-  style={barra}
-  id="Deputados"
-  freeSolo
-  options={deputados.map((option) => option.nome)}
-  renderInput={(params) => (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <TextField {...params} label="Deputados" sx={{ marginRight: '10px' }} />
-      <Button disabled={false} variant="elevated" endIcon={<SendIcon />} sx={{ marginLeft: '-10px' }}  size='large'>
-        Enviar
-      </Button>
-    </div>
-  )}
-  sx={{ width: 500 }}
-/>
       </Container>
 
-
-
-
-
-
-
-    </>
-  )
+      <Container>
+         
+      </Container>
+    </>)
 }
 
 export default index
