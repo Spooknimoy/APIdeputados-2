@@ -31,7 +31,7 @@ const Pagina = () => {
         width: '50vh',
         height: '48.3vh',
         loading: "lazy",
-        margintop: '23px'
+       
     }
 
     const texto = {

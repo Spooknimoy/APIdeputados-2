@@ -1,21 +1,21 @@
-import Pagina from '@/Component/Pagina'
-import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import Pagina from '@/Component/Pagina';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import apiDeputados from '@/services/apiDeputados';
 import { Avatar, Button } from '@mui/material';
-
+import { useRouter } from 'next/router';
+import SendIcon from '@mui/icons-material/Send';
 
 const index = ({ deputados }) => {
   const columns = [
     {
       headerName: '#',
       cellRendererFramework: (params) => (
-        <Avatar alt={params.data.nome} src={params.data.avatar}
-          sx={{ width: 50, height: 45 }} />
+        <Avatar alt={params.data.nome} src={params.data.avatar} sx={{ width: 39, height: 39, border: '1px solid black' }} />
       ),
       filter: false,
     },
@@ -27,28 +27,40 @@ const index = ({ deputados }) => {
     {
       headerName: 'Partido',
       field: 'Partido',
+      type: ['dateColumn', 'nonEditableColumn'],
+      cellRendererFramework: (params) => (
+        <Link href={`/partidos/${params.data.Partido}`}>
+          <p>{params.data.Partido}</p>
+        </Link>
+      ),
     },
-
     {
       headerName: 'UF',
       field: 'uf',
     },
-
     {
       headerName: 'E-mail',
       field: 'Email',
     },
     {
-      headerName: '.',
+      headerName: '',
       field: 'button',
-      filter: false, // Remover filtro da coluna "."
+      filter: false,
       cellRendererFramework: (params) => {
         const router = useRouter();
         const handleClick = () => {
-          router.push(/deputados/${params.data.id});
+          router.push(`/deputados/${params.data.id}`);
         };
-    }
-  ]
+        return (
+          <Link href={`/deputados/${params.data.id}`}>
+            <Button variant="outlined" size="small" style={{ padding: '4px 8px' }} endIcon={<SendIcon />} onClick={handleClick}>
+              ENVIAR
+            </Button>
+          </Link>
+        );
+      },
+    },
+  ];
 
   const defaultColDef = {
     sortable: true,
@@ -57,28 +69,18 @@ const index = ({ deputados }) => {
     floatingFilter: true || '#',
   };
 
-
   const subli = {
     textDecoration: 'none',
-  }
-
-
-  const barra = {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: '20rem'
-  }
+  };
 
   const rowData = deputados.map((deputado) => ({
+    id: deputado.id, // Adicione o campo "id" do deputado
     nome: deputado.nome,
     Partido: deputado.siglaPartido,
-    avatar: deputado.urlFoto, // Adicione a propriedade "avatar" do deputado
+    avatar: deputado.urlFoto,
     Email: deputado.email,
     uf: deputado.siglaUf,
-    botao: <Button />
   }));
-
-
 
   return (<>
     <Pagina />
@@ -135,7 +137,7 @@ const index = ({ deputados }) => {
         className="ag-theme-alpine"
         style={{
           height: '35.2rem',
-          width: '100.2rem',
+          width: '100%',
         }}
       >
         <AgGridReact
@@ -143,6 +145,8 @@ const index = ({ deputados }) => {
           columnDefs={columns}
           defaultColDef={defaultColDef}
         />
+
+
       </div>
 
     </Container>
