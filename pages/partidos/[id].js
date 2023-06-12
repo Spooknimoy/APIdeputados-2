@@ -48,17 +48,10 @@ export default DetalhesPartido;
 export async function getServerSideProps(context) {
   const { id } = context.params;
 
-  try {
     const response = await apiDeputados.get(`/partidos/${id}`);
-    const partido = response.data; // Ajuste aqui de acordo com a estrutura dos dados retornados
+    const partido = response.data.dados; // Ajuste aqui de acordo com a estrutura dos dados retornados
 
     return {
       props: { partido },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      notFound: true,
-    };
-  }
+    }
 }
