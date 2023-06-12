@@ -5,7 +5,7 @@ import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
 
 const DetalhesPartido = ({ partido }) => {
-  const {
+  const partido {
     nome,
     sigla,
     urlLogo,
@@ -17,7 +17,7 @@ const DetalhesPartido = ({ partido }) => {
         urlFoto: urlFotoLider,
       },
     },
-  } = partido;
+  }
 
   return (
     <Pagina2 titulo={nome}>
