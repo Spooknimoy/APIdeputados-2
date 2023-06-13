@@ -4,37 +4,25 @@ import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
 
-const DetalhesPartido = ({ partido }) => {
-  const partido = {
-    nome,
-    sigla,
-    urlLogo,
-    status: {
-      lider: {
-        nome: nomeLider,
-        siglaPartido: siglaPartidoLider,
-        uf: ufLider,
-        urlFoto: urlFotoLider,
-      },
-    },
-  } 
+const DetalhesPartido = ({ partido, lideres}) => {
+ 
 
   return (
-    <Pagina2 titulo={nome}>
+    <Pagina2 titulo={partido.nome}>
       <Row>
         <Col md={3}>
-          <Link href={`/partidos/${sigla}`}>
+          <Link href={`/deputados`}>
             <Button variant="danger">Voltar</Button>
           </Link>
           <Card className="mb-4">
-            <Card.Img variant="top" src={urlLogo} />
+            <Card.Img variant="top" src={partido.urlFacebook} />
             <Card.Body>
-              <Card.Title>{nome}</Card.Title>
-              <Card.Text>Partido: {sigla}</Card.Text>
+              <Card.Title>{partido.nome}</Card.Title>
+              <Card.Text>Partido: {partido.sigla}</Card.Text>
               <Card.Text>
-                Líder do Partido: {nomeLider} ({siglaPartidoLider} - {ufLider})
+                Líder do Partido: {lideres.nomeLider} 
               </Card.Text>
-              <Card.Img src={urlFotoLider} />
+              <Card.Img src={lideres.urlFotoLider} />
             </Card.Body>
           </Card>
         </Col>
@@ -49,9 +37,14 @@ export async function getServerSideProps(context) {
   const { id } = context.params;
 
     const response = await apiDeputados.get(`/partidos/${id}`);
-    const partido = response.data.dados; // Ajuste aqui de acordo com a estrutura dos dados retornados
+    const partido = response.data.dados; 
+
+    const lidresponse = await apiDeputados.get(`/partidos/${id}/lideres`);
+    const lideres = lidresponse.data.dados; 
 
     return {
-      props: { partido },
+      props: { partido, lideres },
     }
+    
+
 }
