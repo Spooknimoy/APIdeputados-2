@@ -4,25 +4,25 @@ import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
 
-const DetalhesPartido = ({ partido, membros }) => {
+const DetalhesOrgao = ({ orgao, membros, eventos, votacao }) => {
 
 
   return (
-    <Pagina2 titulo={partido.nome}>
+    <Pagina2 titulo={orgao.sigla}>
       <Row>
         <Col md={3}>
-          <Link href={`/partidos`}>
+          <Link href={`/deputados/deputs`}>
             <Button variant="danger">Voltar</Button>
           </Link>
           <Card className="mb-4">
-            <Card.Img variant="top" src={partido.urlLogo} />
+            <Card.Img variant="top" />
             <Card.Body>
-              <Card.Title>{partido.nome}</Card.Title>
-              <Card.Text>Criado : {partido.status.data}</Card.Text>
-              <Card.Text>Partido: {partido.sigla}</Card.Text>
-              <Card.Text>UF: {partido.status.lider.uf}</Card.Text>
-              <Card.Text>Membros: {partido.status.totalMembros}</Card.Text>
-              <Card.Text>Situação: {partido.status.situacao}</Card.Text>
+              <Card.Title>{orgao.nome}</Card.Title>
+              <Card.Text>Data : {orgao.dataInstalacao}</Card.Text>
+              <Card.Text>Sigla: {orgao.sigla}</Card.Text>
+              <Card.Text>tipo de orgao: {orgao.tipoOrgao}</Card.Text>
+              <Card.Text>Apelido: {orgao.apelido}</Card.Text>
+              <Card.Text>Nome da Publicação: {orgao.nomePublica}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -52,10 +52,11 @@ const DetalhesPartido = ({ partido, membros }) => {
         <Col >
           <Card className="mb-" style={{marginTop: '35px'}}>
             <Card.Text>
-              <p>Líder do Partido: {partido.status.lider.nome}</p>
+              <h1>Locais</h1>
+            {eventos.map((item) => (
+              <p>locais: {item.localCamara.nome}</p>
+            ))}
             </Card.Text>
-            <Card.Img variant='top' style={{ width: '110px', height: '150px', marginLeft: '15px', marginTop: '1px'  }} src={partido.status.lider.urlFoto} />
-            <Card.Text></Card.Text>
           </Card>
         </Col>
         <Col></Col>
@@ -64,20 +65,26 @@ const DetalhesPartido = ({ partido, membros }) => {
   );
 };
 
-export default DetalhesPartido;
+export default DetalhesOrgao;
 
 export async function getServerSideProps(context) {
-  const { id } = context.params;
 
-  const response = await apiDeputados.get(`/partidos/${id}`);
-  const partido = response.data.dados;
+    const id = context.params.id
+  
+    const org = await apiDeputados.get('/orgaos/' + id)
+    const orgao = org.data.dados
 
-  const lidresponse = await apiDeputados.get(`/partidos/${id}/membros`);
-  const membros = lidresponse.data.dados;
+    const or = await apiDeputados.get('/orgaos/' + id + '/membros' )
+    const membros = or.data.dados
 
-  return {
-    props: { partido, membros },
+    const o = await apiDeputados.get('/orgaos/' + id + '/eventos' )
+    const eventos = o.data.dados
+
+    const vo = await apiDeputados.get('/orgaos/' + id + '/votacoes' )
+    const votacao = vo.data.dados
+    
+    
+    return {
+      props: { orgao, membros, eventos, votacao },
+    }
   }
-
-
-}

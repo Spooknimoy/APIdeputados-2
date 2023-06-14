@@ -3,17 +3,23 @@ import { Button, Card, Col, Row, Table } from 'react-bootstrap'
 import Link from 'next/link'
 import Pagina2 from '@/Component/Pagina2'
 import apiDeputados from '@/services/apiDeputados'
-import { Chart as chartjs, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js'
+import { Chart as chartjs, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, RadialLinearScale, BarElement } from 'chart.js/auto'
 import { Line } from 'react-chartjs-2'
+
+
 
 chartjs.register(
     LineElement,
     CategoryScale,
     LinearScale,
-    PointElement
-)
+    PointElement,
+    ArcElement,
+    RadialLinearScale,
+    BarElement
+);
 
-const Detalhes = ({ deputado, despesas, profissoes }) => {
+
+const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     const valoresDespesas = despesas.map((item) => item.valorDocumento);
     const datasDespesas = despesas.map((item) => item.dataDocumento);
 
@@ -21,11 +27,13 @@ const Detalhes = ({ deputado, despesas, profissoes }) => {
         labels: datasDespesas,
         datasets: [{
             data: valoresDespesas,
-            backgroundColor: 'gray',
-            borderColor: 'blue'
+            backgroundColor: 'orange',
+            borderColor: 'blue',
+            hoverOffset: 10
         }]
     };
     const option = {};
+
 
     return (
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
@@ -41,6 +49,7 @@ const Detalhes = ({ deputado, despesas, profissoes }) => {
                             <Card.Title>{deputado.ultimoStatus.nome}</Card.Title>
                             <Card.Text>Partido: {deputado.ultimoStatus.siglaPartido}</Card.Text>
                             <Card.Text>UF Partido: {deputado.ultimoStatus.siglaUf}</Card.Text>
+                            <Card.Text>@: {deputado.ultimoStatus.email}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -59,18 +68,37 @@ const Detalhes = ({ deputado, despesas, profissoes }) => {
                                 <tr key={lista}>
                                     <td>{item.dataDocumento}</td>
                                     <td>{item.tipoDespesa}</td>
-                                    <td>{item.valorDocumento}</td>
+                                    <td
+                                        style={{
+                                            color: item.valorDocumento >= 6000 ? 'red' : item.valorDocumento < 2000 ? 'green' : 'orange'
+                                        }}
+                                    >
+                                        {item.valorDocumento}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
 
+
+
                     </Table>
                 </Col>
-                <Col md={2}>
+                <Col md={1} >
                     <h1>Profissões</h1>
                     <ul>
                         {profissoes.map(item => (
                             <li>{item.titulo}</li>
+                        ))}
+                    </ul>
+
+
+                    <h1>Orgão</h1>
+                    <ul>
+                        {orgao.map(item => (
+                            <Link href={'/orgao/' + item.idOrgao}>
+                                <li>{item.siglaOrgao}</li>
+                            </Link>
+
                         ))}
                     </ul>
 
@@ -79,6 +107,7 @@ const Detalhes = ({ deputado, despesas, profissoes }) => {
                     <Line data={data} options={option}></Line>
 
                 </Col>
+
             </Row>
 
         </Pagina2>
@@ -100,8 +129,11 @@ export async function getServerSideProps(context) {
     const prof = await apiDeputados.get('/deputados/' + id + '/profissoes')
     const profissoes = prof.data.dados
 
+    const org = await apiDeputados.get('/deputados/' + id + '/orgaos')
+    const orgao = org.data.dados
+
     return {
-        props: { despesas, deputado, profissoes },
+        props: { despesas, deputado, profissoes, orgao },
     }
 
 }

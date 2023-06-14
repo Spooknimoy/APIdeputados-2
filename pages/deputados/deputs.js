@@ -2,7 +2,7 @@ import Pagina2 from '@/Component/Pagina2'
 import apiDeputados from '@/services/apiDeputados'
 import Link from 'next/link'
 import React from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
+import { Button, Card, Col, Row } from 'react-bootstrap'
 
 
 
@@ -10,7 +10,9 @@ const index = ({ deputados }) => {
 
   return (
     <Pagina2 titulo='Deputados'>
-
+      <Link href={'/deputados/'}>
+        <Button>Home</Button>
+      </Link>
       <Row md={6}>
         {deputados.map(item => (
           <Col>

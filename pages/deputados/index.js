@@ -88,10 +88,13 @@ const index = ({ deputados }) => {
 
       <Nav variant="tabs" defaultActiveKey="/home" className='mt-4'>
         <Nav.Item>
-          <Nav.Link href="/home">API RESTful</Nav.Link>
+          <Nav.Link href="/deputados/deputs">Deputados</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link-1">Arquivos</Nav.Link>
+          <Nav.Link href="/partidos">Partidos</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link href="/Orgao">Orgao</Nav.Link>
         </Nav.Item>
 
       </Nav>
