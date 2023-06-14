@@ -4,13 +4,19 @@ import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
 
+<<<<<<< HEAD
 const DetalhesPartido = ({ partido, membros }) => {
 
+=======
+const DetalhesPartido = ({ partido, lideres}) => {
+ 
+>>>>>>> 4740d9ff33b0337eaab8d7c7453380d366d77c5d
 
   return (
     <Pagina2 titulo={partido.nome}>
       <Row>
         <Col md={3}>
+<<<<<<< HEAD
           <Link href={`/partidos`}>
             <Button variant="danger">Voltar</Button>
           </Link>
@@ -23,6 +29,20 @@ const DetalhesPartido = ({ partido, membros }) => {
               <Card.Text>UF: {partido.status.lider.uf}</Card.Text>
               <Card.Text>Membros: {partido.status.totalMembros}</Card.Text>
               <Card.Text>Situação: {partido.status.situacao}</Card.Text>
+=======
+          <Link href={`/deputados`}>
+            <Button variant="danger">Voltar</Button>
+          </Link>
+          <Card className="mb-4">
+            <Card.Img variant="top" src={partido.urlFacebook} />
+            <Card.Body>
+              <Card.Title>{partido.nome}</Card.Title>
+              <Card.Text>Partido: {partido.sigla}</Card.Text>
+              <Card.Text>
+                Líder do Partido: {lideres.nomeLider} 
+              </Card.Text>
+              <Card.Img src={lideres.urlFotoLider} />
+>>>>>>> 4740d9ff33b0337eaab8d7c7453380d366d77c5d
             </Card.Body>
           </Card>
         </Col>
@@ -69,6 +89,7 @@ export default DetalhesPartido;
 export async function getServerSideProps(context) {
   const { id } = context.params;
 
+<<<<<<< HEAD
   const response = await apiDeputados.get(`/partidos/${id}`);
   const partido = response.data.dados;
 
@@ -81,3 +102,17 @@ export async function getServerSideProps(context) {
 
 
 }
+=======
+    const response = await apiDeputados.get(`/partidos/${id}`);
+    const partido = response.data.dados; 
+
+    const lidresponse = await apiDeputados.get(`/partidos/${id}/lideres`);
+    const lideres = lidresponse.data.dados; 
+
+    return {
+      props: { partido, lideres },
+    }
+    
+
+}
+>>>>>>> 4740d9ff33b0337eaab8d7c7453380d366d77c5d

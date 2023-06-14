@@ -40,7 +40,7 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
 
             <Row>
                 <Col md={3}>
-                    <Link href='/deputados/deputs'>
+                    <Link href='/deputados'>
                         <Button variant='danger'>Voltar</Button>
                     </Link>
                     <Card className='mb-4'>
