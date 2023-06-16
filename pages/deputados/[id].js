@@ -24,7 +24,7 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     };
     const option = {};
 
-    const option = {
+    const options = {
         xaxis: {
             type: 'datetime'
         },
@@ -128,7 +128,7 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
             <h1 className='mt-5 text-center'>Veja o gráfico a seguir</h1>
 
              <ApexCharts 
-        options={option}
+        options={options}
         series={series}
         type="candlestick"
         width={1000}
