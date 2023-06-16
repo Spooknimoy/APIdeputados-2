@@ -18,6 +18,11 @@ chartjs.register(
     BarElement
 );
 
+const styles = {
+    fundo: {
+        background: 'url("https://www.gov.br/planalto/pt-br/conheca-a-presidencia/acervo/simbolos-nacionais/brasao-da-republica/brasaooficialcolorido.png")',
+    }
+}
 
 const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     const valoresDespesas = despesas.map((item) => item.valorDocumento);
@@ -38,11 +43,10 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     return (
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
 
-            <Row>
-                <Col md={3}>
-                    <Link href='/deputados'>
-                        <Button variant='danger'>Voltar</Button>
-                    </Link>
+            <Row style={styles.fundo}>
+
+
+                <Col>
                     <Card className='mb-4'>
                         <Card.Img variant="top" key={deputado.id} src={deputado.ultimoStatus.urlFoto} />
                         <Card.Body>
@@ -53,9 +57,14 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col md={7}>
-                    <h1>Despesas</h1>
-                    <Table striped bordered hover size="sm">
+
+
+            </Row>
+
+            <Row>
+                <Col md={9} className='pe-0  bg-dark'>
+                    <h1 className='bg-dark text-white mb-0 me-0'>Despesas</h1>
+                    <Table variant="dark" striped bordered hover size="sm">
                         <thead>
                             <tr>
                                 <th>Data</th>
@@ -70,7 +79,12 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                                     <td>{item.tipoDespesa}</td>
                                     <td
                                         style={{
-                                            color: item.valorDocumento >= 6000 ? 'red' : item.valorDocumento < 2000 ? 'green' : 'orange'
+                                            color:
+                                                item.valorDocumento >= 6000
+                                                    ? 'red'
+                                                    : item.valorDocumento < 2000
+                                                        ? 'green'
+                                                        : 'orange',
                                         }}
                                     >
                                         {item.valorDocumento}
@@ -78,37 +92,30 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                                 </tr>
                             ))}
                         </tbody>
-
-
-
                     </Table>
                 </Col>
-                <Col md={1} >
-                    <h1>Profissões</h1>
-                    <ul>
-                        {profissoes.map(item => (
-                            <li>{item.titulo}</li>
-                        ))}
-                    </ul>
+                <Col md={3} className="bg-dark text-white text-center ms-0">
+                    <h1 className='mt-5'>Profissões</h1>
 
+                    {profissoes.map((item, index) => (
+                        <li key={index}>{item.titulo}</li>
+                    ))}
 
-                    <h1>Orgão</h1>
-                    <ul>
-                        {orgao.map(item => (
-                            <Link href={'/orgao/' + item.idOrgao}>
-                                <li>{item.siglaOrgao}</li>
-                            </Link>
+                    <h1 className='mt-5'>Orgão</h1>
 
-                        ))}
-                    </ul>
+                    {orgao.map((item, index) => (
+                        <Link key={index} href={'/orgao/' + item.idOrgao}>
+                            <li>{item.siglaOrgao}</li>
+                        </Link>
+                    ))}
 
                 </Col>
-                <Col style={{ width: '500px', height: '500px', marginLeft: '20px' }}>
-                    <Line data={data} options={option}></Line>
-
-                </Col>
-
             </Row>
+            <Col style={{ width: '500px', height: '500px', marginLeft: '20px' }}>
+                <Line data={data} options={option}></Line>
+            </Col>
+
+
 
         </Pagina2>
     )
