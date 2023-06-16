@@ -24,6 +24,26 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     };
     const option = {};
 
+    const option = {
+        xaxis: {
+            type: 'datetime'
+        },
+        yaxis: {
+            tooltip: {
+                enabled: true
+            }
+        }
+    }
+
+    const series = [{
+        data: [{
+            x: new Date(1538778600000),
+            y: [6629.81, 6650.5, 6623.04, 6633.33]
+          },
+          
+        ]
+      }]
+
     return (
 
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
@@ -107,7 +127,15 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
 
             <h1 className='mt-5 text-center'>Veja o gráfico a seguir</h1>
 
-
+             <ApexCharts 
+        options={option}
+        series={series}
+        type="candlestick"
+        width={1000}
+        height={700}
+        >
+            
+        </ApexCharts>
            
               
 
