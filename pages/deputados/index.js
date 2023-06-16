@@ -27,6 +27,12 @@ const index = ({ deputados }) => {
     {
       headerName: 'Partido',
       field: 'Partido',
+      type: ['dateColumn', 'nonEditableColumn'],
+      cellRendererFramework: (params) => (
+        <Link href={`/partidos/${params.data.Partido}`}>
+          <p>{params.data.Partido}</p>
+        </Link>
+      ),
     },
     {
       headerName: 'UF',
