@@ -3,7 +3,7 @@ import { Button, Card, Col, Row, Table } from 'react-bootstrap';
 import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
-
+import ApexCharts from "react-apexcharts";
 
 
 
