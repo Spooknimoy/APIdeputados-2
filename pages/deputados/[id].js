@@ -1,28 +1,13 @@
-import React from 'react'
-import { Button, Card, Col, Row, Table } from 'react-bootstrap'
-import Link from 'next/link'
-import Pagina2 from '@/Component/Pagina2'
-import apiDeputados from '@/services/apiDeputados'
-import { Chart as chartjs, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, RadialLinearScale, BarElement } from 'chart.js/auto'
-import { Line } from 'react-chartjs-2'
+import React from 'react';
+import { Button, Card, Col, Row, Table } from 'react-bootstrap';
+import Link from 'next/link';
+import Pagina2 from '@/Component/Pagina2';
+import apiDeputados from '@/services/apiDeputados';
+import Grafico from '@/Component/Grafico';
 
 
 
-chartjs.register(
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    ArcElement,
-    RadialLinearScale,
-    BarElement
-);
 
-const styles = {
-    fundo: {
-        background: 'url("https://www.gov.br/planalto/pt-br/conheca-a-presidencia/acervo/simbolos-nacionais/brasao-da-republica/brasaooficialcolorido.png")',
-    }
-}
 
 const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     const valoresDespesas = despesas.map((item) => item.valorDocumento);
@@ -39,23 +24,26 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     };
     const option = {};
 
-
     return (
+
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
 
-            <Row style={styles.fundo}>
-
-
-                <Col>
-                    <Card className='mb-4'>
-                        <Card.Img variant="top" key={deputado.id} src={deputado.ultimoStatus.urlFoto} />
-                        <Card.Body>
+            <Row  className="img-fluid">
+                <Col md={6}>
+                    <Card className="mb-4" style={{ width: '20rem' }}>
+                        <Card.Img variant="top" key={deputado.id} src={deputado.ultimoStatus.urlFoto} style={{ backgroundPosition: 'right' }} className="img-fluid" />
+                        <Card.Body style={{ fontSize: '17px' }}>
                             <Card.Title>{deputado.ultimoStatus.nome}</Card.Title>
                             <Card.Text>Partido: {deputado.ultimoStatus.siglaPartido}</Card.Text>
                             <Card.Text>UF Partido: {deputado.ultimoStatus.siglaUf}</Card.Text>
                             <Card.Text>@: {deputado.ultimoStatus.email}</Card.Text>
                         </Card.Body>
                     </Card>
+                    
+                </Col>
+
+                <Col md={6} >
+                  <img style={{ width: '60rem', marginTop: '1rem' }} src='https://www.gov.br/planalto/pt-br/conheca-a-presidencia/acervo/simbolos-nacionais/brasao-da-republica/brasaooficialcolorido.png'></img>
                 </Col>
 
 
@@ -97,23 +85,32 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                 <Col md={3} className="bg-dark text-white text-center ms-0">
                     <h1 className='mt-5'>Profissões</h1>
 
-                    {profissoes.map((item, index) => (
-                        <li key={index}>{item.titulo}</li>
-                    ))}
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                        {profissoes.map((item, index) => (
+                            <li key={index}>{item.titulo}</li>
+                        ))}
+                    </ul>
 
                     <h1 className='mt-5'>Orgão</h1>
 
-                    {orgao.map((item, index) => (
-                        <Link key={index} href={'/orgao/' + item.idOrgao}>
-                            <li>{item.siglaOrgao}</li>
-                        </Link>
-                    ))}
-
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                        {orgao.map((item, index) => (
+                            <Link key={index} href={'/orgao/' + item.idOrgao}>
+                                <li>{item.siglaOrgao}</li>
+                            </Link>
+                        ))}
+                    </ul>
                 </Col>
             </Row>
-            <Col style={{ width: '500px', height: '500px', marginLeft: '20px' }}>
-                <Line data={data} options={option}></Line>
-            </Col>
+
+
+
+            <h1 className='mt-5 text-center'>Veja o gráfico a seguir</h1>
+
+
+           
+              <Grafico></Grafico>
+       
 
 
 

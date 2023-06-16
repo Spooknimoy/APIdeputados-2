@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react'
 import Cabecalho from './Cabecalho'
 import { Container } from 'react-bootstrap';
-import logs from './imagens/m.png';
+
 
 const Pagina = () => {
 
