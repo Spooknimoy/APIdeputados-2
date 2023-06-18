@@ -3,9 +3,21 @@ import { Button, Card, Col, Row, Table } from 'react-bootstrap';
 import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
+import { Chart as chartjs, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, RadialLinearScale, BarElement } from 'chart.js/auto'
+import { Line } from 'react-chartjs-2'
+import Rodape from '@/Component/Rodape';
 
 
 
+chartjs.register(
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    ArcElement,
+    RadialLinearScale,
+    BarElement
+);
 
 
 
@@ -25,6 +37,8 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
     const option = {};
 
     return (
+
+        <>
 
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
 
@@ -83,7 +97,7 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                     </Table>
                 </Col>
                 <Col md={3} className="bg-dark text-white text-center ms-0">
-                    <h1 className='mt-5'>Profissões</h1>
+                    <h1 className='mt-5'style={{fontFamily: 'fantasy'}} >Profissões</h1>
 
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {profissoes.map((item, index) => (
@@ -91,12 +105,12 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                         ))}
                     </ul>
 
-                    <h1 className='mt-5'>Orgão</h1>
+                    <h1 className='mt-5' style={{fontFamily: 'fantasy'}}>Orgão</h1>
 
-                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                    <ul style={{ listStyleType: 'none', padding: 0, }}>
                         {orgao.map((item, index) => (
                             <Link key={index} href={'/orgao/' + item.idOrgao}>
-                                <li>{item.siglaOrgao}</li>
+                                <li  className='text-white'>{item.siglaOrgao}</li>
                             </Link>
                         ))}
                     </ul>
@@ -105,15 +119,32 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
 
 
 
-            <h1 className='mt-5 text-center'>Veja o gráfico a seguir</h1>
+            <h1 className='mt-5 text-center mb-5'  style={{fontFamily: 'Robooto'}}>Veja o gráfico a seguir</h1>
 
+         
+            <Row style={{display: 'flex'}}>
+            <Col  md={6} className='p-0' style={{ width: '60rem', height: 'auto', marginLeft: '20px', marginTop: '5rem'}}>
+                <Line data={data} options={option}></Line>
 
-           
+                
+             </Col>
+             
+             <Col className='p-0' md={3}  style={{}}>
+             <img  className='p-0' src='https://i.im.ge/2023/06/18/icidCX.mulher-grafico.png' style={{width: '28rem', height: 'auto', marginTop: '9rem' }} ></img>
+             </Col>
+      
+            </Row>
               
 
-
+          
 
         </Pagina2>
+
+
+        <Rodape></Rodape>
+
+</>
+
     )
 }
 
