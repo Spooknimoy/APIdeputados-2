@@ -147,15 +147,20 @@ const index = ({ deputados }) => {
           rowData={rowData}
           columnDefs={columns}
           defaultColDef={defaultColDef}
+        /> 
+        <h1 className='text-center mt-5' style={{fontFamily: 'fantasy'}}>Líderes</h1>
+<AgGridReact 
+          rowData={rowData}
+          columnDefs={columns}
+          defaultColDef={defaultColDef}
         />
-
 
       </div>
 
     </Container>
-    <br />
-    <br />
-    <br />
+  
+
+
 
   </>)
 }
