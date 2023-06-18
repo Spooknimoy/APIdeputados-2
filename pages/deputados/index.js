@@ -91,10 +91,10 @@ const index = ({ deputados }) => {
           <Nav.Link href="/deputados/deputs">Deputados</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="/partidos">Partidos</Nav.Link>
+          <Nav.Link href="/lideres">LÍderes</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="/partidos">LÍderes</Nav.Link>
+          <Nav.Link href="/partidos">Partidos</Nav.Link>
         </Nav.Item>
 
       </Nav>

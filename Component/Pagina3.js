@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-  const Pagina = ( {deputado}) => {
+const Pagina = (props) => {
   return (
     <>
       <div className='bg-success text-white py-3 text-center mb-3'>
@@ -48,9 +48,9 @@ export async function getServerSideProps(context) {
 
   const dep = await apiDeputados.get('/deputados/' + id)
   const deputado = dep.data.dados
-
+  
   return {
-      props: {deputado},
+      props: { despesas, deputado, profissoes, orgao },
   }
 
 }
