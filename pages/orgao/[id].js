@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Card, Col, Row, Table } from 'react-bootstrap';
-import Link from 'next/link';
-import Pagina2 from '@/Component/Pagina2';
+import Pagina3 from '@/Component/Pagina3';
 import apiDeputados from '@/services/apiDeputados';
 import Rodape from '@/Component/Rodape';
 
@@ -11,7 +10,7 @@ const DetalhesOrgao = ({ orgao, membros, eventos, votacao }) => {
   return (
 
     <>
-    <Pagina2 titulo={orgao.sigla}>
+    <Pagina3 titulo={orgao.sigla}>
       <Row>
         <Col md={3}>
           <Card className="mb-4 m">
@@ -61,9 +60,9 @@ const DetalhesOrgao = ({ orgao, membros, eventos, votacao }) => {
         </Col>
         <Col></Col>
       </Row>
-    </Pagina2>
+    </Pagina3>
 
-    <div style={{ height: '10rem' }}></div> 
+    <div style={{ height: '23rem' }}></div> 
 
 
 

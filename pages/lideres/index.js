@@ -2,7 +2,7 @@ import Pagina2 from '@/Component/Pagina2'
 import apiDeputados from '@/services/apiDeputados'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { Button, Card, Col, Row } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 
 const index = ({ deputados }) => {
   const [hoveredId, setHoveredId] = useState(null);
