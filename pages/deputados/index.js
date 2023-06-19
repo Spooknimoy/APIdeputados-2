@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import SendIcon from '@mui/icons-material/Send';
 
 const index = ({ deputados }) => {
+  
   const columns = [
     {
       headerName: '#',
@@ -148,12 +149,6 @@ const index = ({ deputados }) => {
           columnDefs={columns}
           defaultColDef={defaultColDef}
         /> 
-        <h1 className='text-center mt-5' style={{fontFamily: 'fantasy'}}>Líderes</h1>
-<AgGridReact 
-          rowData={rowData}
-          columnDefs={columns}
-          defaultColDef={defaultColDef}
-        />
 
       </div>
 

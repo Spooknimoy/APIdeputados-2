@@ -1,3 +1,4 @@
+import { ArrowBack } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
@@ -10,13 +11,15 @@ const Pagina = (props) => {
       <div className='bg-success text-white py-3 text-center mb-3'>
         <div style={{ display: 'flex', marginTop: '2px' }}>
 
-          <Button  style={{ marginLeft: '3rem', padding: '0px 30px', fontFamily: 'inherit', fontWeight: 'bold', }}
-
-            size="small" color='success' variant="contained">
-              
-
-            <Link className='text-white'  style={{ textDecoration: 'none' }} href={'/deputados' + id } >Voltar</Link>
-
+          <Button
+            style={{ marginLeft: '3rem', padding: '0px 30px', fontFamily: 'inherit', fontWeight: 'bold', }}
+            size="small"
+            color='success'
+            variant="contained"
+            onClick={() => window.history.back()}
+          >
+            <ArrowBack />
+            Voltar
           </Button>
 
           <style jsx>{`
@@ -48,9 +51,9 @@ export async function getServerSideProps(context) {
 
   const dep = await apiDeputados.get('/deputados/' + id)
   const deputado = dep.data.dados
-  
+
   return {
-      props: { despesas, deputado, profissoes, orgao },
+    props: { despesas, deputado, profissoes, orgao },
   }
 
 }

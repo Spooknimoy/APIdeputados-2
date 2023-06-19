@@ -11,13 +11,11 @@ const Index = () => {
     const fetchPartidos = async () => {
       const response1 = await apiDeputados.get('/partidos/?pagina=1');
       const response2 = await apiDeputados.get('/partidos/?pagina=2');
-      const response3 = await apiDeputados.get('/partidos/?pagina=3');
 
       const partidos1 = response1.data.dados;
       const partidos2 = response2.data.dados;
-      const partidos3 = response3.data.dados;
 
-      const combinedPartidos = [...partidos1, ...partidos2, ...partidos3];
+      const combinedPartidos = [...partidos1, ...partidos2, ];
 
       setPartidos(combinedPartidos);
     };
@@ -27,7 +25,7 @@ const Index = () => {
 
   return (
     <Pagina2 titulo="Partidos">
-      <Row md={6}>
+      <Row md={1}>
         {partidos.map((item) => (
           <Col key={item.id}>
             <Card className="mb-4">
