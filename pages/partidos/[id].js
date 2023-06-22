@@ -3,34 +3,38 @@ import { Button, Card, Col, Row, Table } from 'react-bootstrap';
 import Link from 'next/link';
 import Pagina3 from '@/Component/Pagina3';
 import apiDeputados from '@/services/apiDeputados';
+import Rodape from '@/Component/Rodape';
 
 
 const DetalhesPartido = ({ partido, membros }) => {
-
+  const cardTextStyle = {
+    fontFamily: 'Arial, sans-serif', // Defina a fonte desejada
+  };
 
   return (
+    <>
+
     <Pagina3 titulo={partido.nome}>
       <Row>
-        <Col md={3}>
-          <Card className="mb-4">
+        <Col className='me-5' md={3}>
+          <Card className="mb-4 bg-success text-white">
             <Card.Img variant="top" src={partido.urlLogo} />
             <Card.Body>
               <Card.Title>{partido.nome}</Card.Title>
-              <Card.Text>Criado : {partido.status.data}</Card.Text>
-              <Card.Text>Partido: {partido.sigla}</Card.Text>
-              <Card.Text>UF: {partido.status.lider.uf}</Card.Text>
-              <Card.Text>Membros: {partido.status.totalMembros}</Card.Text>
-              <Card.Text>Situação: {partido.status.situacao}</Card.Text>
-
+              <Card.Text style={cardTextStyle}>Criado: {partido.status.data}</Card.Text>
+              <Card.Text style={cardTextStyle}>Partido: {partido.sigla}</Card.Text>
+              <Card.Text style={cardTextStyle}>UF: {partido.status.lider.uf}</Card.Text>
+              <Card.Text style={cardTextStyle}>Membros: {partido.status.totalMembros}</Card.Text>
+              <Card.Text style={cardTextStyle}>Situação: {partido.status.situacao}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={7}>
+        <Col className='me-5' md={6}>
           <h1>Membros</h1>
-          <Table striped bordered hover size="sm">
+          <Table striped bordered hover size="sm"  className="table-custom">
             <thead>
-              <tr>
-                <th>Sigla do Partido</th>
+              <tr >
+                <th >Sigla do Partido</th>
                 <th>Nome</th>
                 <th>UF</th>
               </tr>
@@ -44,22 +48,35 @@ const DetalhesPartido = ({ partido, membros }) => {
                 </tr>
               ))}
             </tbody>
-
-
           </Table>
         </Col>
-        <Col >
-          <Card className="mb-" style={{marginTop: '35px'}}>
+        <Col  className='me-2' md={2} >
+          <Card className="mb-4 " style={{ marginTop: '35px' }}>
             <Card.Text>
-              <p>Líder do Partido: {partido.status.lider.nome}</p>
+             <Link href={'/deputados'}> <p className='text-center' style={cardTextStyle}> Líder do Partido <br/>
+              {partido.status.lider.nome}</p></Link>
             </Card.Text>
-            <Card.Img variant='top' style={{ width: '110px', height: '150px', marginLeft: '15px', marginTop: '1px'  }} src={partido.status.lider.urlFoto} />
+            <Card.Img
+              variant="top"
+              className="rounded border border-dark d-block mx-auto"
+              style={{
+                width: '110px',
+                height: '150px',
+                marginTop: '10px',
+              }}
+              src={partido.status.lider.urlFoto}
+            />
             <Card.Text></Card.Text>
           </Card>
         </Col>
         <Col></Col>
       </Row>
     </Pagina3>
+
+    <div style={{ height: '23rem' }}></div> 
+
+    <Rodape></Rodape>
+   </>
   );
 };
 
@@ -76,7 +93,5 @@ export async function getServerSideProps(context) {
 
   return {
     props: { partido, membros },
-  }
-
-
+  };
 }

@@ -1,44 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Row, Table } from 'react-bootstrap';
 import Link from 'next/link';
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
-import { Chart as chartjs, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, RadialLinearScale, BarElement } from 'chart.js/auto'
-import { Line } from 'react-chartjs-2'
-import Rodape from '@/Component/Rodape';
 
 
 
-chartjs.register(
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    ArcElement,
-    RadialLinearScale,
-    BarElement
-);
-
-
-
-const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
-    const valoresDespesas = despesas.map((item) => item.valorDocumento);
-    const datasDespesas = despesas.map((item) => item.dataDocumento);
-
-    const data = {
-        labels: datasDespesas,
-        datasets: [{
-            data: valoresDespesas,
-            backgroundColor: 'orange',
-            borderColor: 'blue',
-            hoverOffset: 10
-        }]
+    useEffect(() => {
+      updateChart();
+    }, [selectedMonth]);
+  
+    const updateChart = () => {
+      const filteredValoresDespesas = todasdespesas
+        .filter((item) => item.dataDocumento.includes(`-${selectedMonth}-`))
+        .map((item) => item.valorDocumento);
+  
+      const filteredDatasDespesas = todasdespesas
+        .filter((item) => item.dataDocumento.includes(`-${selectedMonth}-`))
+        .map((item) => item.dataDocumento);
+  
+      setValoresDespesas(filteredValoresDespesas);
+      setDatasDespesas(filteredDatasDespesas);
     };
+  
+    const data = {
+      labels: datasDespesas,
+      datasets: [{
+        data: valoresDespesas,
+        backgroundColor: 'orange',
+        borderColor: 'blue',
+        hoverOffset: 10
+      }]
+    };
+  
     const option = {};
 
     return (
-
-        <>
 
         <Pagina2 titulo={deputado.ultimoStatus.nome}>
 
@@ -97,7 +94,7 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                     </Table>
                 </Col>
                 <Col md={3} className="bg-dark text-white text-center ms-0">
-                    <h1 className='mt-5'style={{fontFamily: 'fantasy'}} >Profissões</h1>
+                    <h1 className='mt-5'>Profissões</h1>
 
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {profissoes.map((item, index) => (
@@ -105,12 +102,12 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
                         ))}
                     </ul>
 
-                    <h1 className='mt-5' style={{fontFamily: 'fantasy'}}>Orgão</h1>
+                    <h1 className='mt-5'>Orgão</h1>
 
-                    <ul style={{ listStyleType: 'none', padding: 0, }}>
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
                         {orgao.map((item, index) => (
                             <Link key={index} href={'/orgao/' + item.idOrgao}>
-                                <li  className='text-white'>{item.siglaOrgao}</li>
+                                <li>{item.siglaOrgao}</li>
                             </Link>
                         ))}
                     </ul>
@@ -119,55 +116,41 @@ const Detalhes = ({ deputado, despesas, profissoes, orgao }) => {
 
 
 
-            <h1 className='mt-5 text-center mb-5'  style={{fontFamily: 'Robooto'}}>Veja o gráfico a seguir</h1>
+            <h1 className='mt-5 text-center'>Veja o gráfico a seguir</h1>
 
-         
-            <Row style={{display: 'flex'}}>
-            <Col  md={6} className='p-0' style={{ width: '60rem', height: 'auto', marginLeft: '20px', marginTop: '5rem'}}>
-                <Line data={data} options={option}></Line>
 
-                
-             </Col>
-             
-             <Col className='p-0' md={3}  style={{}}>
-             <img  className='p-0' src='https://i.im.ge/2023/06/18/icidCX.mulher-grafico.png' style={{width: '28rem', height: 'auto', marginTop: '9rem' }} ></img>
-             </Col>
-      
-            </Row>
+           
               
 
-          
+
 
         </Pagina2>
-
-
-        <Rodape></Rodape>
-
-</>
-
     )
 }
 
 export default Detalhes
 
 export async function getServerSideProps(context) {
+  const id = context.params.id;
 
-    const id = context.params.id
+  const dep = await apiDeputados.get('/deputados/' + id);
+  const deputado = dep.data.dados;
 
-    const dep = await apiDeputados.get('/deputados/' + id)
-    const deputado = dep.data.dados
+  const desp = await apiDeputados.get('/deputados/' + id + '/despesas?pagina=2&itens=500&ordenarPor=ano');
+  const despesas = desp.data.dados;
 
-    const desp = await apiDeputados.get('/deputados/' + id + '/despesas')
-    const despesas = desp.data.dados
+  const despe = await apiDeputados.get('/deputados/' + id + '/despesas?pagina=1&itens=500&ordenarPor=mes');
+  const despesas2 = despe.data.dados;
 
-    const prof = await apiDeputados.get('/deputados/' + id + '/profissoes')
-    const profissoes = prof.data.dados
+  const todasdespesas = [...despesas, ...despesas2];
 
-    const org = await apiDeputados.get('/deputados/' + id + '/orgaos')
-    const orgao = org.data.dados
+  const prof = await apiDeputados.get('/deputados/' + id + '/profissoes');
+  const profissoes = prof.data.dados;
 
-    return {
-        props: { despesas, deputado, profissoes, orgao },
-    }
+  const org = await apiDeputados.get('/deputados/' + id + '/orgaos');
+  const orgao = org.data.dados;
 
+  return {
+    props: { despesas, todasdespesas, deputado, profissoes, orgao },
+  };
 }
