@@ -1,8 +1,9 @@
 import Pagina2 from '@/Component/Pagina2';
 import apiDeputados from '@/services/apiDeputados';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 
 const Index = () => {
   const [partidos, setPartidos] = useState([]);
@@ -15,38 +16,71 @@ const Index = () => {
       const partidos1 = response1.data.dados;
       const partidos2 = response2.data.dados;
 
-      const combinedPartidos = [...partidos1, ...partidos2, ];
+      const combinedPartidos = [...partidos1, ...partidos2];
 
-      setPartidos(combinedPartidos);
+      // Atualize os detalhes de cada partido com a URL da foto
+      const partidosComFoto = await Promise.all(
+        combinedPartidos.map(async (partido) => {
+          const partidoDetalhes = await apiDeputados.get(`/partidos/${partido.id}`);
+          const fotoPartido = partidoDetalhes.data.dados.urlLogo;
+          return { ...partido, urlFoto: fotoPartido };
+        })
+      );
+
+      setPartidos(partidosComFoto);
     };
 
     fetchPartidos();
   }, []);
 
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const handleHover = (id) => {
+    setHoveredId(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredId(null);
+  };
+
   return (
     <Pagina2 titulo="Partidos">
-      <Row md={1}>
+     <Row md={1} style={{ listStyleType: 'none' }}>
         {partidos.map((item) => (
           <Col key={item.id}>
-            <Card className="mb-4">
-              <Link href={`/partidos/${item.id}`}>
-                <Card.Img
-                  variant="top"
-                  src="https://media.gettyimages.com/id/641295104/pt/foto/dueling-boxing-gloves.jpg?s=612x612&w=0&k=20&c=81YUhxfYQNlzzqzvJMuFf1hrLGRTWhaY74bqXUzNkZ0="                   
-                />
-                <Card.Body>
-                  <Card.Title>{item.nome}</Card.Title>
-                  <Card.Text>Partido: {item.sigla}</Card.Text>
-                  <Card.Text>UF Partido: {item.siglaUf}</Card.Text>
-                </Card.Body>
-              </Link>
+            <Card
+              className='mb-4'
+              style={{
+                transform: hoveredId === item.id ? 'scale(1.05)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+              }}
+              onMouseEnter={() => handleHover(item.id)}
+              onMouseLeave={handleMouseLeave}
+            >
+                    <Link href={`/partidos/${item.id}`} style={{textDecoration: 'none' }}>
+                  <div>
+                    <Card.Img style={{width:'15rem '}} variant="top" src={item.urlFoto || ''} />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '4px',
+                        backgroundColor: hoveredId === item.id ? 'blue' : 'transparent',
+                      }}
+                    ></div>
+                    <Card.Body>
+                      <Card.Title  className='text-dark' style={{ fontFamily: 'Robooto' }}>
+                        {item.nome}
+                      </Card.Title>
+                    </Card.Body>
+                  </div>
+                      </Link>
             </Card>
           </Col>
         ))}
       </Row>
-      <Link href="/deputados/">
-        <Button>Voltar</Button>
-      </Link>
     </Pagina2>
   );
 };
